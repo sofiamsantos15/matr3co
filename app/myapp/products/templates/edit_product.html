@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Editar Produto</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.title.label }} {{ form.title(class="form-control") }}</div>
+    <div class="mb-3">{{ form.description.label }} {{ form.description(class="form-control", rows=4) }}</div>
+    <div class="row">
+      <div class="col mb-3">{{ form.price.label }} {{ form.price(class="form-control") }}</div>
+      <div class="col mb-3">{{ form.is_negotiable() }} {{ form.is_negotiable.label }}</div>
+    </div>
+    <div class="row">
+      <div class="col mb-3">{{ form.category.label }} {{ form.category(class="form-select") }}</div>
+      <div class="col mb-3">{{ form.subcategory.label }} {{ form.subcategory(class="form-select") }}</div>
+    </div>
+    <div class="mb-3">{{ form.photos.label }} {{ form.photos(class="form-control", multiple=true) }}</div>
+
+    <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+  </form>
+</div>
+{% endblock %}

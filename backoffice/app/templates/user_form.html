@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Editar Utilizador</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">{{ form.username.label }} {{ form.username(class="form-control") }}</div>
+  <div class="mb-3">{{ form.email.label }} {{ form.email(class="form-control") }}</div>
+  <div class="mb-3">{{ form.profile.label }} {{ form.profile(class="form-select") }}</div>
+  <button class="btn btn-primary">{{ form.submit.label.text }}</button>
+</form>
+{% endblock %}

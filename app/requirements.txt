@@ -5,3 +5,12 @@ flask-mysqldb==1.0.1
 python-dotenv==0.19.0
 werkzeug==2.0.1
 Pillow==9.0.1
+SQLAlchemy>=1.4,<2.0
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Login
+Flask-WTF
+mysqlclient
+python-dotenv
+bootstrap-flask
+email-validator

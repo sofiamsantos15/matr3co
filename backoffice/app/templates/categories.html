@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Categorias</h2>
+<a href="{{ url_for('routes.new_category') }}" class="btn btn-success mb-2">Nova</a>
+<table class="table">
+  <thead><tr><th>ID</th><th>Nome</th><th>Acoes</th></tr></thead>
+  <tbody>
+  {% for c in categories %}
+    <tr>
+      <td>{{ c.id }}</td>
+      <td>{{ c.name }}</td>
+      <td>
+        <a href="{{ url_for('routes.edit_category', id=c.id) }}" class="btn btn-sm btn-warning">Editar</a>
+        <form method="post" action="{{ url_for('routes.delete_category', id=c.id) }}" style="display:inline;">
+          <button class="btn btn-sm btn-danger" onclick="return confirm('Apagar?')">Apagar</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

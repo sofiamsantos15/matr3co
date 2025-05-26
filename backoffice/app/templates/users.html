@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Utilizadores</h2>
+<table class="table">
+  <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Perfil</th><th>Acoes</th></tr></thead>
+  <tbody>
+  {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.username }}</td>
+      <td>{{ u.email }}</td>
+      <td>{{ u.profile }}</td>
+      <td>
+        <a href="{{ url_for('routes.edit_user', id=u.id) }}" class="btn btn-sm btn-warning">Editar</a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Login</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.email.label(class="form-label") }}
+      {{ form.email(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.password.label(class="form-label") }}
+      {{ form.password(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-primary">
+      {{ form.submit.label.text }}
+    </button>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-link">
+      Criar Conta
+    </a>
+  </form>
+</div>
+{% endblock %}

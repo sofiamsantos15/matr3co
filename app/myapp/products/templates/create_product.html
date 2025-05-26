@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2>Novo Produto</h2>
+  <form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.title.label }} {{ form.title(class="form-control") }}</div>
+    <div class="mb-3">{{ form.description.label }} {{ form.description(class="form-control", rows=4) }}</div>
+    <div class="row">
+      <div class="col mb-3">{{ form.price.label }} {{ form.price(class="form-control") }}</div>
+      <div class="col mb-3">{{ form.is_negotiable() }} {{ form.is_negotiable.label }}</div>
+    </div>
+    <div class="row">
+      <div class="col mb-3">
+        {{ form.category.label }}
+        {{ form.category(class="form-select", id="category") }}
+      </div>
+      <div class="col mb-3">
+        {{ form.subcategory.label }}
+        {{ form.subcategory(class="form-select", id="subcategory") }}
+      </div>
+    </div>
+    <div class="mb-3">{{ form.photos.label }} {{ form.photos(class="form-control", multiple=true, accept=".jpg,.jpeg,.png,.gif") }}</div>
+    <button type="submit" class="btn btn-success">{{ form.submit.label.text }}</button>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // elementos do DOM
+  const categorySelect    = document.getElementById('category');
+  const subcategorySelect = document.getElementById('subcategory');
+
+  // gera a URL base usando url_for e corta o último caractere (o "0")  
+  // para depois concatenar o id real
+  const subUrlBase = "{{ url_for('products.subcategories', category_id=0) }}".slice(0, -1);
+
+  // função que carrega e popula as subcategorias
+  function loadSubcategories(categoryId) {
+    // se não houver categoria, limpa e sai
+    if (!categoryId) {
+      subcategorySelect.innerHTML = '<option value="">-- Escolhe primeiro categoria --</option>';
+      return;
+    }
+
+    fetch(`${subUrlBase}${categoryId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status} – ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // limpa o select
+        subcategorySelect.innerHTML = '';
+        // adiciona uma opção vazia no topo, se quiser
+        subcategorySelect.add(new Option('-- Seleciona Subcategoria --', ''));
+        // itera e adiciona cada subcategoria
+        data.subcategories.forEach(sub => {
+          subcategorySelect.add(new Option(sub.name, sub.id));
+        });
+      })
+      .catch(err => {
+        console.error('Erro ao carregar subcategorias:', err);
+        // opcional: mostrar alerta ao utilizador
+        // alert('Não foi possível carregar as subcategorias. Tenta novamente.');
+      });
+  }
+
+  // listener para quando mudar a categoria
+  categorySelect.addEventListener('change', function() {
+    loadSubcategories(this.value);
+  });
+
+  // ao carregar a página, pré-carrega as subcategorias da categoria atualmente selecionada
+  loadSubcategories(categorySelect.value);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meu Projeto Flask</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  </head>
+<body>
+ <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid d-flex align-items-center">
+    <!-- Marca -->
+    <a class="navbar-brand" href="{{ url_for('main.index') }}">
+      <img src="{{ url_for('static', filename='images/logoMatr3co.jpg') }}"
+           alt="Logo" width="30" height="24"
+           class="d-inline-block align-text-top">
+      Matr3co
+    </a>
+
+    <!-- Pesquisa (centrada e full-width) -->
+    <form method="GET"
+          action="{{ url_for('main.busca') }}"
+          class="d-flex mx-auto flex-grow-1"
+          style="max-width:800px; width:100%;">
+      <!-- input flexível que ocupa todo o restante espaço -->
+      <input class="form-control flex-fill me-2"
+             type="search"
+             placeholder="Pesquisar…"
+             aria-label="Pesquisar">
+      <button class="btn btn-outline-success" type="submit">Pesquisar</button>
+    </form>
+
+    <!-- Botões/utilizador -->
+    <div class="d-flex align-items-center">
+      {% if session.user_id %}
+        <span class="me-2">Olá, {{ session.username }}!</span>
+        <a href="{{ url_for('auth.logout') }}"
+           class="btn btn-outline-secondary me-2">
+          Sair
+        </a>
+        <a href="{{ url_for('auth.edit_profile') }}"
+           class="btn btn-primary me-2">
+          Editar Perfil
+        </a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}"
+           class="btn btn-primary me-2">
+          Iniciar Sessão
+        </a>
+      {% endif %}
+      <a href="{{ url_for('products.create') }}"
+         class="btn btn-success">
+        Vender Agora
+      </a>
+    </div>
+  </div>
+</nav>
+
+  {% block content %}{% endblock %}
+  <script src="stylesheet" href="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  {% block scripts %}{% endblock %}    
+  </body>
+</html>

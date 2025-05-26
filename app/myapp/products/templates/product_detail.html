@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      {% for img in images %}
+        <img src="{{ url_for('static', filename='images/uploads/' ~ img.filename) }}"
+             class="img-fluid mb-2">
+      {% endfor %}
+    </div>
+    <div class="col-md-6">
+      <h2>{{ product.title }}</h2>
+      <p>{{ product.description }}</p>
+      <p><strong>Preço:</strong>
+         {{ "{:,.2f}".format(product.price) }} €
+         {% if product.is_negotiable %}<em>(negociável)</em>{% endif %}
+      </p>
+      <p><strong>Categoria:</strong> {{ product.category }} /
+                   {{ product.subcategory }}</p>
+      <p><strong>Vendedor:</strong> {{ product.username }}</p>
+      {% if session.get('user_id') == product.user_id %}
+        <a href="{{ url_for('products.edit', product_id=product.id) }}"
+           class="btn btn-warning">Editar</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

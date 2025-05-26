@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Subcategorias</h2>
+<a href="{{ url_for('routes.new_subcategory') }}" class="btn btn-success mb-2">Nova</a>
+<table class="table">
+  <thead><tr><th>ID</th><th>Categoria</th><th>Nome</th><th>Acoes</th></tr></thead>
+  <tbody>
+  {% for s in subcategories %}
+    <tr>
+      <td>{{ s.id }}</td>
+      <td>{{ s.category_name }}</td>
+      <td>{{ s.name }}</td>
+      <td>
+        <a href="{{ url_for('routes.edit_subcategory', id=s.id) }}" class="btn btn-sm btn-warning">Editar</a>
+        <form method="post" action="{{ url_for('routes.delete_subcategory', id=s.id) }}" style="display:inline;">
+          <button class="btn btn-sm btn-danger" onclick="return confirm('Apagar?')">Apagar</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
