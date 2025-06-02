@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Meu Projeto Flask</title>
+    <title>Matr3co </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
   </head>
 <body>
@@ -18,17 +18,21 @@
     </a>
 
     <!-- Pesquisa (centrada e full-width) -->
-    <form method="GET"
-          action="{{ url_for('main.busca') }}"
-          class="d-flex mx-auto flex-grow-1"
-          style="max-width:800px; width:100%;">
-      <!-- input flexível que ocupa todo o restante espaço -->
+    <form id="search-form"
+      method="GET"
+      action="{{ url_for('main.busca') }}"
+      class="d-flex mx-auto flex-grow-1"
+      style="max-width:800px; width:100%;">
       <input class="form-control flex-fill me-2"
-             type="search"
-             placeholder="Pesquisar…"
-             aria-label="Pesquisar">
+            type="search"
+            name="q"
+            id="search-input"
+            value="{{ search_query | default('') }}"
+            placeholder="Pesquisar…"
+            aria-label="Pesquisar">
       <button class="btn btn-outline-success" type="submit">Pesquisar</button>
     </form>
+
 
     <!-- Botões/utilizador -->
     <div class="d-flex align-items-center">
@@ -57,7 +61,22 @@
 </nav>
 
   {% block content %}{% endblock %}
-  <script src="stylesheet" href="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('search-form');
+        const input = document.getElementById('search-input');
+
+        form.addEventListener('submit', function(event) {
+          const trimmedValue = input.value.trim();
+          if (!trimmedValue) {
+            event.preventDefault();
+            alert('Por favor insira um termo de pesquisa.');
+            input.focus();
+          }
+        });
+      });
+  </script>
   {% block scripts %}{% endblock %}    
   </body>
 </html>

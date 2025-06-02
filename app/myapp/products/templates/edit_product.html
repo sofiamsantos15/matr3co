@@ -1,22 +1,105 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container mt-5">
-  <h2>Editar Produto</h2>
-  <form method="post">
-    {{ form.hidden_tag() }}
-    <div class="mb-3">{{ form.title.label }} {{ form.title(class="form-control") }}</div>
-    <div class="mb-3">{{ form.description.label }} {{ form.description(class="form-control", rows=4) }}</div>
-    <div class="row">
-      <div class="col mb-3">{{ form.price.label }} {{ form.price(class="form-control") }}</div>
-      <div class="col mb-3">{{ form.is_negotiable() }} {{ form.is_negotiable.label }}</div>
-    </div>
-    <div class="row">
-      <div class="col mb-3">{{ form.category.label }} {{ form.category(class="form-select") }}</div>
-      <div class="col mb-3">{{ form.subcategory.label }} {{ form.subcategory(class="form-select") }}</div>
-    </div>
-    <div class="mb-3">{{ form.photos.label }} {{ form.photos(class="form-control", multiple=true) }}</div>
+    <h2>Editar Produto</h2>
+    <form method="post" enctype="multipart/form-data"> 
+        {{ form.hidden_tag() }}
+        <div class="mb-3">{{ form.title.label }} {{ form.title(class="form-control") }}</div>
+        <div class="mb-3">{{ form.description.label }} {{ form.description(class="form-control", rows=4) }}</div>
+        <div class="row">
+            <div class="col mb-3">{{ form.price.label }} {{ form.price(class="form-control") }}</div>
+            <div class="col mb-3">{{ form.is_negotiable() }} {{ form.is_negotiable.label }}</div>
+        </div>
+        <div class="row">
+            <div class="col mb-3">{{ form.category.label }} {{ form.category(class="form-select", id="category") }}</div>
+            <div class="col mb-3">{{ form.subcategory.label }} {{ form.subcategory(class="form-select", id="subcategory") }}</div>
+        </div>
+        
+        <div class="mb-3">
+            <h4>Imagens Atuais</h4>
+            <div class="d-flex flex-wrap mb-3" id="current-images-container"> {# Adicionado um ID para facilitar a referência #}
+                {% for image in product_images %}
+                <div class="me-2 mb-2 border p-1 rounded position-relative image-item" id="image-{{ image.id }}"> {# Adicionado ID e classe #}
+                    <img src="{{ url_for('static', filename='images/uploads/' + image.filename) }}" alt="Imagem do Produto" style="width: 100px; height: 100px; object-fit: cover;">
+                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" data-image-id="{{ image.id }}" onclick="markImageForRemoval(this)">X</button>
+                    {# Este input agora tem um ID para ser facilmente referenciado pelo JS #}
+                    <input type="hidden" name="keep_image_ids" value="{{ image.id }}" id="image-input-{{ image.id }}">
+                </div>
+                {% endfor %}
+            </div>
+            {{ form.photos.label }} {{ form.photos(class="form-control", multiple=true) }}
+        </div>
 
-    <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
-  </form>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+    </form>
 </div>
+
+{% block scripts %}
+{{ super() }} 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect    = document.getElementById('category');
+    const subcategorySelect = document.getElementById('subcategory');
+    const subUrlBase = "{{ url_for('products.subcategories', category_id=0) }}".slice(0, -1);
+
+    function loadSubcategories(categoryId, currentSubcategoryId = null) {
+        if (!categoryId) {
+            subcategorySelect.innerHTML = '<option value="">-- Escolha primeiro categoria --</option>';
+            return;
+        }
+        fetch(`${subUrlBase}${categoryId}`)
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status} – ${response.statusText}`);
+                return response.json();
+            })
+            .then(data => {
+                subcategorySelect.innerHTML = '';
+                subcategorySelect.add(new Option('-- Seleciona Subcategoria --', ''));
+                data.subcategories.forEach(sub => {
+                    const option = new Option(sub.name, sub.id);
+                    subcategorySelect.add(option);
+                });
+                if (currentSubcategoryId) {
+                    subcategorySelect.value = currentSubcategoryId;
+                }
+            })
+            .catch(err => {
+                console.error('Erro ao carregar subcategorias:', err);
+            });
+    }
+
+    if (categorySelect) {
+        categorySelect.addEventListener('change', function() {
+            loadSubcategories(this.value);
+        });
+
+        const initialCategoryId = categorySelect.value;
+        const initialSubcategoryId = "{{ form.subcategory.data if form.subcategory.data else '' }}";
+        if (initialCategoryId) {
+            loadSubcategories(initialCategoryId, initialSubcategoryId);
+        } else {
+            subcategorySelect.innerHTML = '<option value="">-- Escolha primeiro categoria --</option>';
+        }
+    }
+});
+
+// RENOMEADA A FUNÇÃO PARA SER MAIS CLARA NO SEU NOVO OBJETIVO
+function markImageForRemoval(button) {
+    const imageId = button.dataset.imageId;
+    const imageDiv = document.getElementById(`image-${imageId}`);
+    const imageInput = document.getElementById(`image-input-${imageId}`);
+
+    if (confirm('Tem certeza que deseja remover esta imagem?')) {
+        if (imageInput) {
+            imageInput.name = 'images_to_delete';
+        }
+        if (imageDiv) {
+            imageDiv.classList.add('border-danger', 'opacity-50');
+            button.disabled = true;
+        }
+    }
+}
+
+</script>
+{% endblock %}
 {% endblock %}

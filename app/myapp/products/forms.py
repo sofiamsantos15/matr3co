@@ -1,7 +1,8 @@
+# forms.py
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, DecimalField, BooleanField, SelectField, MultipleFileField, SubmitField
 from wtforms.validators import DataRequired, Length, NumberRange
-from flask_wtf.file import FileAllowed, FileRequired
+from flask_wtf.file import FileAllowed, FileRequired # <-- CUIDADO AQUI
 
 class ProductForm(FlaskForm):
     title       = StringField('Título', validators=[DataRequired(), Length(max=150)])
@@ -13,11 +14,10 @@ class ProductForm(FlaskForm):
     photos = MultipleFileField(
         'Fotos',
         validators=[
-            FileAllowed(['jpg','jpeg','png','gif'], 'Somente imagens!'),
-            FileRequired('Selecione pelo menos uma foto.')
+            FileAllowed(['jpg','jpeg','png','gif'], 'Somente imagens!')
+            # FileRequired('Selecione pelo menos uma foto.') # <-- REMOVA OU COMENTE ESTA LINHA SE PERMITIR EDIÇÃO SEM NOVAS FOTOS
         ],
         render_kw={
-            # aceita apenas estes tipos de ficheiro no diálogo
             'accept': '.jpg,.jpeg,.png,.gif'
         }
     )
