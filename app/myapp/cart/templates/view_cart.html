@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <h2>O Meu Carrinho</h2>
+    {% if products %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Preço (€)</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.title }}</td>
+                <td>{{ product.price }}</td>
+                <td>
+                    <a href="{{ url_for('cart.remove_from_cart', product_id=product.id) }}" 
+                       class="btn btn-sm btn-danger">
+                       Remover
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h4>Total: {{ total }} €</h4>
+    <a href="{{ url_for('cart.checkout') }}" class="btn btn-primary">Finalizar Compra</a>
+    {% else %}
+    <p>O seu carrinho está vazio.</p>
+    {% endif %}
+</div>
+{% endblock %}

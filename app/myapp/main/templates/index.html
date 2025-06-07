@@ -16,23 +16,46 @@
   <div class="row row-cols-1 row-cols-md-4 g-4">
     {% for p in products %}
       <div class="col">
-        <div class="card h-100">
+        <!-- Card com borda preta, cantos arredondados e overflow escondido -->
+        <div class="card h-100 border border-dark rounded overflow-hidden">
           {% if p.thumb %}
-            <img src="{{ url_for('static', filename='images/uploads/' ~ p.thumb) }}"
-                 class="card-img-top" alt="{{ p.title }}">
+            <!-- Imagem com altura fixa e object-fit para recorte -->
+            <img
+              src="{{ url_for('static', filename='images/uploads/' ~ p.thumb) }}"
+              class="card-img-top img-fluid"
+              style="height: 200px; object-fit: cover;"
+              alt="{{ p.title }}">
           {% endif %}
-          <div class="card-body">
-            <h5 class="card-title">{{ p.title }}</h5>
-            <p class="card-text">
-              {{ "{:,.2f}".format(p.price) }} €
-              {% if p.is_negotiable %}<small>(negociável)</small>{% endif %}
+
+          <div class="card-body d-flex flex-column">
+            <!-- Título alinhado à esquerda (padrão) -->
+            <h6 class="card-title mb-2">{{ p.title }}</h6>
+
+            <!-- Preço grande e em negrito, alinhado à esquerda -->
+            <p class="mb-1">
+              <span class="fs-3 fw-bold">{{ "{:,.2f}".format(p.price) }} €</span>
             </p>
-            <a href="{{ url_for('products.detail', product_id=p.id) }}"
-               class="btn btn-primary">Ver detalhe</a>
+
+            <!-- “(Negociável)” em cinzento, alinhado à esquerda -->
+            {% if p.is_negotiable %}
+              <p class="text-secondary mb-3">
+                <small>(Negociável)</small>
+              </p>
+            {% endif %}
+
+            <!-- Botão pequeno, verde, alinhado à direita -->
+            <div class="mt-auto d-flex justify-content-end">
+              <a
+                href="{{ url_for('products.detail', product_id=p.id) }}"
+                class="btn btn-success btn-sm">
+                Ver Detalhes
+              </a>
+            </div>
           </div>
         </div>
       </div>
     {% endfor %}
   </div>
 </div>
+
 {% endblock %}
