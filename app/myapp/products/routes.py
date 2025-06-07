@@ -1,5 +1,4 @@
-import os
-import uuid
+import osimport uuid
 import logging
 from flask import (
     render_template, request, redirect, url_for,
@@ -97,7 +96,6 @@ def create():
                     original_filename = secure_filename(photo_file.filename)
                     _, extension = os.path.splitext(original_filename)
                     unique_filename = str(uuid.uuid4()) + extension
-
                     save_path = os.path.join(upload_folder, unique_filename)
                     photo_file.save(save_path)
                     saved_photos_filenames.append(unique_filename)
@@ -120,6 +118,7 @@ def create():
     return render_template('create_product.html', form=form)
 
 @bp.route('/<int:product_id>/edit', methods=['GET', 'POST'])
+
 def edit(product_id):
     if 'user_id' not in session:
         flash('Faça login para editar.', 'warning')
@@ -127,6 +126,7 @@ def edit(product_id):
 
     db = get_db()
     cur_dict = db.cursor(dictionary=True)
+
     cur_dict.execute("SELECT * FROM products WHERE id = %s", (product_id,))
     prod = cur_dict.fetchone()
 
@@ -149,9 +149,11 @@ def edit(product_id):
         form.subcategory.data = prod.get('subcategory_id')
         form.estado.data = prod.get('estado')
 
+
     _load_category_choices(form)
 
     if request.method == 'POST':
+
         if not form.validate():
             flash('Erro ao validar o formulário.', 'danger')
             return render_template('edit_product.html', form=form, product=prod, product_images=product_images)
@@ -212,6 +214,7 @@ def edit(product_id):
                     _, extension = os.path.splitext(original_filename)
                     unique_filename = str(uuid.uuid4()) + extension
 
+
                     save_path = os.path.join(upload_folder, unique_filename)
                     photo_file.save(save_path)
                     new_photos_to_save.append((product_id, unique_filename))
@@ -234,6 +237,7 @@ def edit(product_id):
 
     return render_template('edit_product.html', form=form, product=prod, product_images=product_images)
 
+
 @bp.route('/subcategories/<int:category_id>')
 def subcategories(category_id):
     db = get_db()
@@ -251,7 +255,7 @@ def detail(product_id):
     cur = db.cursor(dictionary=True)
     cur.execute("""
         SELECT p.*, u.username,
-               c.name AS category, sc.name AS subcategory
+                c.name AS category, sc.name AS subcategory
           FROM products p
           JOIN users u ON p.user_id = u.id
           JOIN categories c ON p.category_id = c.id

@@ -32,8 +32,6 @@ class ProductForm(FlaskForm):
         'Fotos',
         validators=[
             FileAllowed(['jpg','jpeg','png','gif'], 'Somente imagens!')
-            # Se quiser forçar ao menos 1 foto, descomente:
-            # FileRequired('Selecione pelo menos uma foto.')
         ],
         render_kw={
             'accept': '.jpg,.jpeg,.png,.gif'
