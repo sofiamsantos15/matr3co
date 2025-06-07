@@ -4,29 +4,63 @@
     <h2>Editar Produto</h2>
     <form method="post" enctype="multipart/form-data"> 
         {{ form.hidden_tag() }}
-        <div class="mb-3">{{ form.title.label }} {{ form.title(class="form-control") }}</div>
-        <div class="mb-3">{{ form.description.label }} {{ form.description(class="form-control", rows=4) }}</div>
-        <div class="row">
-            <div class="col mb-3">{{ form.price.label }} {{ form.price(class="form-control") }}</div>
-            <div class="col mb-3">{{ form.is_negotiable() }} {{ form.is_negotiable.label }}</div>
+
+        <div class="mb-3">
+            {{ form.title.label }} 
+            {{ form.title(class="form-control") }}
         </div>
-        <div class="row">
-            <div class="col mb-3">{{ form.category.label }} {{ form.category(class="form-select", id="category") }}</div>
-            <div class="col mb-3">{{ form.subcategory.label }} {{ form.subcategory(class="form-select", id="subcategory") }}</div>
+
+        <div class="mb-3">
+            {{ form.description.label }} 
+            {{ form.description(class="form-control", rows=4) }}
         </div>
-        
+
+        <div class="row">
+            <div class="col mb-3">
+                {{ form.price.label }} 
+                {{ form.price(class="form-control") }}
+            </div>
+            <div class="col mb-3">
+                {{ form.is_negotiable() }} 
+                {{ form.is_negotiable.label }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col mb-3">
+                {{ form.category.label }} 
+                {{ form.category(class="form-select", id="category") }}
+            </div>
+            <div class="col mb-3">
+                {{ form.subcategory.label }} 
+                {{ form.subcategory(class="form-select", id="subcategory") }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            {{ form.estado.label }}
+            {{ form.estado(class="form-select") }}
+        </div>
+
         <div class="mb-3">
             <h4>Imagens Atuais</h4>
-            <div class="d-flex flex-wrap mb-3">
+            <div class="d-flex flex-wrap mb-3" id="current-images-container">
                 {% for image in product_images %}
-                <div class="me-2 mb-2 border p-1 rounded position-relative">
-                    <img src="{{ url_for('static', filename='images/uploads/' + image.filename) }}" alt="Imagem do Produto" style="width: 100px; height: 100px; object-fit: cover;">
-                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" data-image-id="{{ image.id }}" onclick="removeImage(this)">X</button>
-                    <input type="hidden" name="existing_images" value="{{ image.id }}">
+                <div class="me-2 mb-2 border p-1 rounded position-relative image-item" id="image-{{ image.id }}">
+                    <img src="{{ url_for('static', filename='images/uploads/' + image.filename) }}" 
+                         alt="Imagem do Produto" 
+                         style="width: 100px; height: 100px; object-fit: cover;">
+                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" 
+                            data-image-id="{{ image.id }}" 
+                            onclick="markImageForRemoval(this)">
+                        X
+                    </button>
+                    <input type="hidden" name="keep_image_ids" value="{{ image.id }}" id="image-input-{{ image.id }}">
                 </div>
                 {% endfor %}
             </div>
-            {{ form.photos.label }} {{ form.photos(class="form-control", multiple=true) }}
+            {{ form.photos.label }} 
+            {{ form.photos(class="form-control", multiple=true) }}
         </div>
 
         <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
@@ -34,13 +68,11 @@
 </div>
 
 {% block scripts %}
-{{ super() }} 
+{{ super() }}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const categorySelect    = document.getElementById('category');
     const subcategorySelect = document.getElementById('subcategory');
-    // Certifica-te de que 'category_id=0' está lá para ser substituído corretamente.
-    // A barra final é removida para que o category_id seja anexado diretamente.
     const subUrlBase = "{{ url_for('products.subcategories', category_id=0) }}".slice(0, -1);
 
     function loadSubcategories(categoryId, currentSubcategoryId = null) {
@@ -50,7 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         fetch(`${subUrlBase}${categoryId}`)
             .then(response => {
-                if (!response.ok) throw new Error(`HTTP ${response.status} – ${response.statusText}`);
+                if (!response.ok) 
+                    throw new Error(`HTTP ${response.status} – ${response.statusText}`);
                 return response.json();
             })
             .then(data => {
@@ -74,8 +107,8 @@ document.addEventListener('DOMContentLoaded', function() {
             loadSubcategories(this.value);
         });
 
-        const initialCategoryId = categorySelect.value;
-        const initialSubcategoryId = "{{ form.subcategory.data if form.subcategory.data else '' }}";
+        const initialCategoryId     = categorySelect.value;
+        const initialSubcategoryId  = "{{ form.subcategory.data if form.subcategory.data else '' }}";
         if (initialCategoryId) {
             loadSubcategories(initialCategoryId, initialSubcategoryId);
         } else {
@@ -84,22 +117,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function removeImage(button) {
-    const imageDiv = button.closest('.border');
+// Marca a imagem para remoção
+function markImageForRemoval(button) {
     const imageId = button.dataset.imageId;
+    const imageDiv = document.getElementById(`image-${imageId}`);
+    const imageInput = document.getElementById(`image-input-${imageId}`);
 
     if (confirm('Tem certeza que deseja remover esta imagem?')) {
-        // Cria um campo de input escondido para enviar o ID da imagem a ser removida
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 'images_to_delete';
-        hiddenInput.value = imageId;
-        document.querySelector('form').appendChild(hiddenInput);
-        
-        // Remove visualmente a imagem
-        imageDiv.remove();
+        if (imageInput) {
+            imageInput.name = 'images_to_delete';
+        }
+        if (imageDiv) {
+            imageDiv.classList.add('border-danger', 'opacity-50');
+            button.disabled = true;
+        }
     }
 }
 </script>
+{% endblock %}
 {% endblock %}
 {% endblock %}

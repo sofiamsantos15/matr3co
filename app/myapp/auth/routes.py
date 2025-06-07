@@ -82,6 +82,15 @@ def edit_profile():
     db   = get_db()
     cur  = db.cursor(dictionary=True)
 
+    # Carregar produtos do utilizador
+    cur.execute("""
+        SELECT id, title, price, is_available
+          FROM products
+         WHERE user_id = %s
+         ORDER BY created_at DESC
+    """, (session['user_id'],))
+    user_products = cur.fetchall()
+
     if request.method == 'GET':
         # pré-carrega campos
         cur.execute(
@@ -125,4 +134,39 @@ def edit_profile():
             flash(f'Erro ao atualizar perfil: {e}', 'danger')
 
     cur.close()
-    return render_template('edit_profile.html', form=form)
+    return render_template('edit_profile.html', form=form, user_products=user_products)
+
+
+
+
+@bp.route('/toggle_product_status/<int:product_id>', methods=['POST'])
+def toggle_product_status(product_id):
+    db = get_db()
+    cur = db.cursor(dictionary=True)
+    cur.execute("""
+        SELECT * FROM products
+         WHERE id = %s AND user_id = %s
+    """, (product_id, session['user_id']))
+    product = cur.fetchone()
+    
+
+    if not product:
+        flash("Produto não encontrado ou sem permissão.", "danger")
+        return redirect(url_for('auth.edit_profile'))
+
+    new_status = 'indisponivel' if product['is_available'] == 'disponivel' else 'disponivel'
+
+    try:
+        cur.execute("""
+            UPDATE products
+               SET is_available = %s
+             WHERE id = %s
+        """, (new_status, product_id))
+        db.commit()
+        flash(f"Produto '{product['title']}' atualizado para '{new_status}'.", "success")
+    except Exception as e:
+        db.rollback()
+        flash(f"Ocorreu um erro ao atualizar o estado do produto: {str(e)}", "danger")
+
+    next_url = request.form.get('next') or url_for('auth.edit_profile')
+    return redirect(next_url)
