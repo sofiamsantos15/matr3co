@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
+{% if search_query %}
+  <h3>Resultados da pesquisa por "{{ search_query }}"</h3>
+  {% if products %}
+    <p>{{ products|length }} produto(s) encontrado(s).</p>
+  {% else %}
+    <div class="alert alert-warning">
+      <p>Nenhum produto encontrado para "{{ search_query }}".</p>
+      <a href="{{ url_for('main.index') }}" class="btn btn-primary mt-2">Voltar à Página Inicial</a>
+    </div>
+  {% endif %}
+{% endif %}
+
 <div class="container mt-4">
   <div class="row row-cols-1 row-cols-md-4 g-4">
     {% for p in products %}

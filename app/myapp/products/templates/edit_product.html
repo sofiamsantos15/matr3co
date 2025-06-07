@@ -17,12 +17,22 @@
         
         <div class="mb-3">
             <h4>Imagens Atuais</h4>
+<<<<<<< HEAD
             <div class="d-flex flex-wrap mb-3">
                 {% for image in product_images %}
                 <div class="me-2 mb-2 border p-1 rounded position-relative">
                     <img src="{{ url_for('static', filename='images/uploads/' + image.filename) }}" alt="Imagem do Produto" style="width: 100px; height: 100px; object-fit: cover;">
                     <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" data-image-id="{{ image.id }}" onclick="removeImage(this)">X</button>
                     <input type="hidden" name="existing_images" value="{{ image.id }}">
+=======
+            <div class="d-flex flex-wrap mb-3" id="current-images-container"> {# Adicionado um ID para facilitar a referência #}
+                {% for image in product_images %}
+                <div class="me-2 mb-2 border p-1 rounded position-relative image-item" id="image-{{ image.id }}"> {# Adicionado ID e classe #}
+                    <img src="{{ url_for('static', filename='images/uploads/' + image.filename) }}" alt="Imagem do Produto" style="width: 100px; height: 100px; object-fit: cover;">
+                    <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" data-image-id="{{ image.id }}" onclick="markImageForRemoval(this)">X</button>
+                    {# Este input agora tem um ID para ser facilmente referenciado pelo JS #}
+                    <input type="hidden" name="keep_image_ids" value="{{ image.id }}" id="image-input-{{ image.id }}">
+>>>>>>> 24f382a703ef08da60dda310478356e237150722
                 </div>
                 {% endfor %}
             </div>
@@ -39,8 +49,11 @@
 document.addEventListener('DOMContentLoaded', function() {
     const categorySelect    = document.getElementById('category');
     const subcategorySelect = document.getElementById('subcategory');
+<<<<<<< HEAD
     // Certifica-te de que 'category_id=0' está lá para ser substituído corretamente.
     // A barra final é removida para que o category_id seja anexado diretamente.
+=======
+>>>>>>> 24f382a703ef08da60dda310478356e237150722
     const subUrlBase = "{{ url_for('products.subcategories', category_id=0) }}".slice(0, -1);
 
     function loadSubcategories(categoryId, currentSubcategoryId = null) {
@@ -84,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+<<<<<<< HEAD
 function removeImage(button) {
     const imageDiv = button.closest('.border');
     const imageId = button.dataset.imageId;
@@ -100,6 +114,25 @@ function removeImage(button) {
         imageDiv.remove();
     }
 }
+=======
+// RENOMEADA A FUNÇÃO PARA SER MAIS CLARA NO SEU NOVO OBJETIVO
+function markImageForRemoval(button) {
+    const imageId = button.dataset.imageId;
+    const imageDiv = document.getElementById(`image-${imageId}`);
+    const imageInput = document.getElementById(`image-input-${imageId}`);
+
+    if (confirm('Tem certeza que deseja remover esta imagem?')) {
+        if (imageInput) {
+            imageInput.name = 'images_to_delete';
+        }
+        if (imageDiv) {
+            imageDiv.classList.add('border-danger', 'opacity-50');
+            button.disabled = true;
+        }
+    }
+}
+
+>>>>>>> 24f382a703ef08da60dda310478356e237150722
 </script>
 {% endblock %}
 {% endblock %}

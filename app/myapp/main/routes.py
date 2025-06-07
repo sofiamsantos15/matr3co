@@ -21,12 +21,7 @@ def index():
     """)
     products = cur.fetchall()
     return render_template('index.html', products=products)
-@bp.route('/sobre')
-def sobre():
-    if 'user_id' not in session:
-        flash('Por favor faça login primeiro', 'warning')
-        return redirect(url_for('auth.login'))
-    return render_template('sobre.html')
+
 
 @bp.route('/products')
 def products():
@@ -38,8 +33,27 @@ def products():
 
 @bp.route('/busca')
 def busca():
-    if 'user_id' not in session:
-        flash('Por favor faça login primeiro', 'warning')
-        return redirect(url_for('auth.login'))
-    termo = request.args.get('q')
-    return f"Você buscou por: {termo}"
+    query = request.args.get('q', '').strip()
+
+    db = get_db()
+    cur = db.cursor(dictionary=True)
+
+    products = []
+    if query:
+        like_pattern = f"%{query}%"
+        cur.execute("""
+            SELECT
+                p.id, p.title, p.price, p.is_negotiable,
+                MIN(pi.filename) AS thumb
+            FROM products p
+            LEFT JOIN product_images pi ON p.id = pi.product_id
+            WHERE p.title LIKE %s OR p.description LIKE %s
+            GROUP BY p.id
+            ORDER BY p.created_at DESC
+            LIMIT 20
+        """, (like_pattern, like_pattern))
+        products = cur.fetchall()
+
+    return render_template('index.html', products=products, search_query=query)
+
+

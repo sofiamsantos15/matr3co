@@ -1,5 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Bem-vindo ao Backoffice</h1>
-<p>Utilize o menu para gerir o conteudo.</p>
+<style>
+  body {
+    background-color: rgb(255, 255, 255); /* fundo geral branco */
+  }
+
+  .navbar {
+    background-color: #14532d !important; /* navbar verde escuro */
+  }
+
+  .navbar .nav-link,
+  .navbar-brand {
+    color: white !important;
+  }
+
+  .banner {
+    background: linear-gradient(to right, #14532d, #1db954); /* gradiente verde */
+    color: white;
+    text-align: center;
+    height: 50vh; /* ocupa metade da altura da página */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .banner h1 {
+    font-size: 5rem; /* texto bem grande */
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+</style>
+
+<!-- Banner topo -->
+<div class="banner">
+  <h1>SOBRE O BACKOFFICE</h1>
+</div>
+
 {% endblock %}
