@@ -25,10 +25,23 @@ def create_app():
     from myapp.main     import bp as main_bp
     from myapp.auth     import bp as auth_bp
     from myapp.products import bp as products_bp
-    
+    from myapp.cart     import bp as cart_bp
+
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(products_bp)
+    app.register_blueprint(cart_bp)
+
+    #app.logger.info(f"💡 Cart Blueprint: {cart_bp}")
+    
+    
+    #app.logger.info("💡 Blueprints registados: %s", app.blueprints.keys())
+    #for rule in app.url_map.iter_rules():
+    #    app.logger.info("🔗 %s -> %s", rule.endpoint, rule)
+
+    #app.logger.info("💡 ENDPOINTS REGISTADOS:")
+    #for rule in app.url_map.iter_rules():
+    #    app.logger.info("%s -> %s", rule.endpoint, rule)
 
     return app
 

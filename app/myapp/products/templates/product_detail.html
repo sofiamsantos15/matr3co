@@ -18,7 +18,7 @@
       <p>
         <strong>Estado:</strong>
         {% if product.estado == 'novo' %}Novo{% endif %}
-        {% if product.estado == 'seminovo' %}Semi‐novo{% endif %}
+        {% if product.estado == 'seminovo' %}Semi-novo{% endif %}
         {% if product.estado == 'usado' %}Usado{% endif %}
         {% if product.estado == 'recondicionado' %}Recondicionado{% endif %}
       </p>
@@ -28,14 +28,15 @@
       <p>
         <strong>Vendedor:</strong> {{ product.username }}
       </p>
+
       {% if session.get('user_id') == product.user_id %}
         <a href="{{ url_for('products.edit', product_id=product.id) }}" class="btn btn-warning">Editar</a>
-      
+
         <!-- Botão Marcar como Indisponível -->
         <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
-          Marcar como Indisponível
+          Retirar de venda
         </button>
-      
+
         <!-- Modal de Confirmação -->
         <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
           <div class="modal-dialog">
@@ -45,20 +46,22 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
               </div>
               <div class="modal-body">
-                Tem certeza de que deseja marcar este produto como indisponível? Esta ação é reversível através do back‐office.
+                Tem certeza de que deseja deixar de vender este produto? 
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <form action="{{ url_for('products.delete', product_id=product.id) }}" method="post">
-                  <button type="submit" class="btn btn-danger">Marcar como Indisponível</button>
+                  <button type="submit" class="btn btn-danger">OK</button>
                 </form>
               </div>
             </div>
           </div>
         </div>
+      {% else %}
+          <a href="{{ url_for('cart.add_to_cart', product_id=product.id) }}" class="btn btn-success">Adicionar ao Carrinho</a>
       {% endif %}
 
-      <a href="{{ url_for('main.index') }}" class="btn btn-primary mt-2">Voltar à Página Inicial</a>
+      <a href="{{ url_for('main.index') }}" class="btn btn-primary ms-2">Voltar</a>
     </div>
   </div>
 </div>

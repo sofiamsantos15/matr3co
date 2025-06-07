@@ -30,5 +30,39 @@
       {{ form.submit.label.text }}
     </button>
   </form>
+
+  <hr>
+
+  <h3 class="mt-4">Os meus produtos</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Preço (€)</th>
+        <th>Estado</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in user_products %}
+      <tr>
+        <td>{{ product.title }}</td>
+        <td>{{ "{:,.2f}".format(product.price) }}</td>
+        <td>{{ product.is_available }}</td>
+        <td>
+          <form method="post" action="{{ url_for('auth.toggle_product_status', product_id=product.id) }}">
+            {{ form.hidden_tag() }}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            {% if product.is_available == 'disponivel' %}
+              <button type="submit" class="btn btn-danger btn-sm">Retirar de venda</button>
+            {% else %}
+              <button type="submit" class="btn btn-success btn-sm">Colocar à venda</button>
+            {% endif %}
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 {% endblock %}

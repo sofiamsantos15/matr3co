@@ -12,7 +12,7 @@ def get_db():
                 password=cfg['MYSQL_PASSWORD'],
                 database=cfg['MYSQL_DATABASE']
             )
-            current_app.logger.info("Nova conexão com a BD")
+            
         except mysql.connector.Error as err:
             current_app.logger.error(f"Erro na conexão: {err}")
             raise

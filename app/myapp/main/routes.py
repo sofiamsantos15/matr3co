@@ -15,6 +15,7 @@ def index():
             MIN(pi.filename) AS thumb
         FROM products p
         LEFT JOIN product_images pi ON p.id = pi.product_id
+        WHERE p.is_available='disponivel'
         GROUP BY p.id
         ORDER BY p.created_at DESC
         LIMIT 20
@@ -43,14 +44,15 @@ def busca():
         like_pattern = f"%{query}%"
         cur.execute("""
             SELECT
-                p.id, p.title, p.price, p.is_negotiable,
+                p.id, p.title, p.price, p.is_negotiable, 
                 MIN(pi.filename) AS thumb
             FROM products p
             LEFT JOIN product_images pi ON p.id = pi.product_id
             WHERE p.title LIKE %s OR p.description LIKE %s
+            AND p.is_available='disponivel'
             GROUP BY p.id
             ORDER BY p.created_at DESC
-            LIMIT 20
+            LIMIT 30
         """, (like_pattern, like_pattern))
         products = cur.fetchall()
 
