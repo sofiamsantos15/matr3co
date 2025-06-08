@@ -2,7 +2,6 @@ from flask import Blueprint, session, redirect, url_for, render_template, flash
 from flask_login import login_required, current_user
 from myapp.db import get_db
 from myapp.cart.forms import CheckoutForm
-import smtplib
 
 from . import bp
 
@@ -130,23 +129,8 @@ def checkout():
                 )
                 seller = cur.fetchone()
                 cur.close()
-                if seller:
-                    send_email_to_seller(seller['email'], seller['title'])
         db.commit()
         session.pop('cart')
         flash('Compra concluída com sucesso!', 'success')
         return redirect(url_for('main.index'))
     return render_template('checkout.html', form=form)
-
-def send_email_to_seller(email, product_title):
-    sender = 'noreply@matr3co.pt'
-    subject = 'O seu produto foi comprado!'
-    body = f'O seu produto "{product_title}" foi comprado. Prepare-o para envio.'
-    message = f"Subject: {subject}\n\n{body}"
-    try:
-        with smtplib.SMTP('smtp.example.com', 587) as server:
-            server.starttls()
-            server.login('username', 'password')
-            server.sendmail(sender, email, message)
-    except Exception as e:
-        print(f"Erro ao enviar email: {e}")

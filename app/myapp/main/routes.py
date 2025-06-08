@@ -24,14 +24,6 @@ def index():
     return render_template('index.html', products=products)
 
 
-@bp.route('/products')
-def products():
-    if 'user_id' not in session:
-        flash('Por favor faça login primeiro', 'warning')
-        return redirect(url_for('c.login'))
-    return render_template('products/index.html')
-
-
 @bp.route('/busca')
 def busca():
     query = request.args.get('q', '').strip()
@@ -58,4 +50,6 @@ def busca():
 
     return render_template('index.html', products=products, search_query=query)
 
-
+@bp.route('/sobre')
+def sobre():
+    return render_template('sobre.html')

@@ -131,7 +131,16 @@ VALUES
         'admin',
         NULL,
         TRUE
+    ),
+    (
+        'Sofia Santos',
+        'sofia.marcelino.santos@gmail.com',
+        'pbkdf2:sha256:260000$dxHgNxD8jZRIquup$f4196b26636278ce19de65119e207936871b6409732acb486d3684f36117490b',
+        'admin',
+        NULL,
+        TRUE
     );
+
 -- 7.2) Dados de categorias 
 INSERT IGNORE INTO categories (name) VALUES 
     ('Estrutura e Aglomerantes'),
@@ -347,7 +356,7 @@ VALUES
      'usado',
      'disponivel'
     );SET @pid = LAST_INSERT_ID();
-INSERT INTO product_images (product_id, filename) VALUES (@pid, 'torneira_monocomando_lavat_rio_6.jpg');
+INSERT INTO product_images (product_id, filename) VALUES (@pid, 'torneira_monocomando_lavat_rio_6.png');
 
 -- Inserção do produto: Furadeira Bosch 500W 7
 INSERT INTO products
@@ -381,7 +390,7 @@ VALUES
      'seminovo',
      'disponivel'
     );SET @pid = LAST_INSERT_ID();
-INSERT INTO product_images (product_id, filename) VALUES (@pid, 'telha_cer_mica_marselha_8.jpg');
+INSERT INTO product_images (product_id, filename) VALUES (@pid, 'telha_cer_mica_marselha_8.png');
 
 -- Inserção do produto: Conjunto de Chaves de Fenda 9
 INSERT INTO products
@@ -421,7 +430,7 @@ INSERT INTO product_images (product_id, filename) VALUES (@pid, 'saco_de_areia_5
 INSERT INTO products
     (user_id, category_id, subcategory_id, title, description, price, is_negotiable, estado, is_available)
 VALUES
-    (1,
+    (2,
      (SELECT id FROM categories WHERE name = 'Proteção e Segurança'),
      (SELECT id FROM subcategories WHERE name = 'Equipamento de proteção individual (não usado)' 
        AND category_id = (SELECT id FROM categories WHERE name = 'Proteção e Segurança')),
@@ -438,7 +447,7 @@ INSERT INTO product_images (product_id, filename) VALUES (@pid, 'capacete_de_pro
 INSERT INTO products
     (user_id, category_id, subcategory_id, title, description, price, is_negotiable, estado, is_available)
 VALUES
-    (1,
+    (2,
      (SELECT id FROM categories WHERE name = 'Metais e Ferragens'),
      (SELECT id FROM subcategories WHERE name = 'Perfis metálicos (sobras de corte)' 
        AND category_id = (SELECT id FROM categories WHERE name = 'Metais e Ferragens')),
@@ -455,7 +464,7 @@ INSERT INTO product_images (product_id, filename) VALUES (@pid, 'perfil_met_lico
 INSERT INTO products
     (user_id, category_id, subcategory_id, title, description, price, is_negotiable, estado, is_available)
 VALUES
-    (1,
+    (2,
      (SELECT id FROM categories WHERE name = 'Elétrico e Iluminação'),
      (SELECT id FROM subcategories WHERE name = 'Cabos e rolos' 
        AND category_id = (SELECT id FROM categories WHERE name = 'Elétrico e Iluminação')),
@@ -466,13 +475,13 @@ VALUES
      'recondicionado',
      'disponivel'
     );SET @pid = LAST_INSERT_ID();
-INSERT INTO product_images (product_id, filename) VALUES (@pid, 'rolo_de_cabo_el_trico_2_5mm_2_-_100m_13.jpg');
+INSERT INTO product_images (product_id, filename) VALUES (@pid, 'rolo_de_cabo_el_trico_2_5mm_2_-_100m_13.png');
 
 -- Inserção do produto: Bombas e acessórios hidráulicos em bom estado 14
 INSERT INTO products
     (user_id, category_id, subcategory_id, title, description, price, is_negotiable, estado, is_available)
 VALUES
-    (1,
+    (2,
      (SELECT id FROM categories WHERE name = 'Canalizações e Acessórios'),
      (SELECT id FROM subcategories WHERE name = 'Bombas e acessórios hidráulicos' 
        AND category_id = (SELECT id FROM categories WHERE name = 'Canalizações e Acessórios')),
@@ -489,7 +498,7 @@ INSERT INTO product_images (product_id, filename) VALUES (@pid, 'bombas_e_acess_
 INSERT INTO products
     (user_id, category_id, subcategory_id, title, description, price, is_negotiable, estado, is_available)
 VALUES
-    (1,
+    (2,
      (SELECT id FROM categories WHERE name = 'Proteção e Segurança'),
      (SELECT id FROM subcategories WHERE name = 'Extintores e suportes' 
        AND category_id = (SELECT id FROM categories WHERE name = 'Proteção e Segurança')),
@@ -500,13 +509,13 @@ VALUES
      'usado',
      'disponivel'
     );SET @pid = LAST_INSERT_ID();
-INSERT INTO product_images (product_id, filename) VALUES (@pid, 'extintores_e_suportes_em_bom_estado_15.jpg');
+INSERT INTO product_images (product_id, filename) VALUES (@pid, 'extintores_e_suportes_em_bom_estado_15.png');
 
 -- Inserção do produto: Painel OSB 15mm 244x122 cm 16
 INSERT INTO products
     (user_id, category_id, subcategory_id, title, description, price, is_negotiable, estado, is_available)
 VALUES
-    (1,
+    (2,
      (SELECT id FROM categories WHERE name = 'Madeira e Derivados'),
      (SELECT id FROM subcategories WHERE name = 'Painéis OSB, MDF ou contraplacado' 
        AND category_id = (SELECT id FROM categories WHERE name = 'Madeira e Derivados')),

@@ -2,7 +2,10 @@ import os
 from flask import Flask
 from myapp.db import close_db
 
+
 def create_app():
+    app = Flask(__name__)
+   
     app = Flask(__name__,
                 static_folder='static',
                 template_folder='templates')  # só para o caso de teres templates comuns

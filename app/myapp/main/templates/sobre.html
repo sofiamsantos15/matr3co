@@ -1,13 +1,102 @@
 {% extends "base.html" %}
 
+{% block title %}
+{% endblock %}
+
+
 {% block content %}
-    <h1>Sobre Nós</h1>
-    <p>
-        Eh pá, já viste bem isto? Só visto, contado ninguém acredita! Ó menino, não faças fita! Não há pão para malucos!
-        Isso é que era um pastel de nata com vista para o Tejo! Grande é a poesia, a bondade e as sardinhas assadas na noite de Santo António! Navegar é preciso, viver nem tanto… mas um pastel de nata ajuda!
-        Quem tem pressa come cru e quente! Tá-se bem, mas era melhor se estivesse! Manda vir mais um fino, que um não chega! Atão mas isto agora é assim?! Calma, que não se faz um Tuga Ipsum num dia! Navegar é preciso, viver nem tanto… mas um pastel de nata ajuda!
-        Atão mas isto agora é assim?! Não há pão para malucos! Ah, pois é! Mas olha, não te estiques muito!
-        Para ser grande, sê inteiro… mas deixa espaço para o arroz de marisco! Já está? Nem parece trabalho de português! Tenho em mim todos os sonhos do mundo… e a vontade de um bom bacalhau à Brás! Navegar é preciso, viver nem tanto… mas um pastel de nata ajuda! Grande é a poesia, a bondade e as sardinhas assadas na noite de Santo António! Quem tem pressa come cru e quente!
-        Navegar é preciso, viver nem tanto… mas um pastel de nata ajuda! Isso é que era um pastel de nata com vista para o Tejo! Isto está pior que as obras de Santa Engrácia!
-    </p>
+  <!-- ===== Banner “Sobre Nós” (Flexbox) ===== -->
+  <header id="fh5co-header"
+        class="fh5co-cover fh5co-cover-sm d-flex justify-content-center align-items-center"
+        role="banner">
+  <div class="overlay"></div>
+  <h1 class="sobre-title text-success px-4 py-2 text-center" >
+  Sobre Nós | Matr3co
+  </h1>
+</header>
+
+
+  <!-- ===== Seção “A nossa História” e “Nossa Missão” ===== -->
+  <div id="fh5co-about">
+    <div class="container">
+      <div class="about-content">
+        <div class="row animate-box">
+          <div class="col-md-6">
+            <div class="desc">
+              <h3>A nossa História</h3>
+              <p>O projeto Matr3co surgiu no âmbito da unidade curricular de Programação para a Internet, quando decidimos unir criatividade e responsabilidade ambiental em uma solução digital.</p> 
+              <p>Nosso grande objetivo foi desenvolver um site voltado à sustentabilidade, permitindo a venda de materiais de construção que sobraram de obras ou que, embora não sejam mais úteis para algumas pessoas, podem ser extremamente valiosos para outras. Assim, incentivamos a reutilização e evitamos o desperdício, criando uma ponte entre quem tem excedentes e quem precisa. O nome Matr3co resume essa filosofia: “Mat” faz referência a materiais; “r3” simboliza a política dos 3R – reduzir, reciclar e reutilizar; e “3co” evoca os princípios de ecologia e economia circular.</p>
+            </div>
+            <div class="desc">
+              <h3>A nossa Missão: transformar a segunda mão na primeira escolha</h3>
+              <p>Queremos mostrar-te como os materiais em segunda mão podem ser fantásticos. Vende aquilo de que já não precisas ou compra materiais únicos que não encontras nas lojas. O Matr3co está aberto a todas as pessoas que acreditam que os artigos de qualidade devem ter uma vida longa.</p> 
+            </div>
+          </div>
+          <div class="col-md-6 text-center">
+            <img class="img-fluid"
+                 src="{{ url_for('static', filename='images/Matr3co.jpg') }}"
+                 alt="Logo Matr3co">
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Seção “Conhece a Nossa Equipa” ===== -->
+      <div class="row justify-content-center mt-5">
+        <div class="col-md-8 text-center fh5co-heading">
+          <h2 class="team-title">Conhece a Nossa Equipa</h2>
+          <p class="team-subtitle">Estas são as pessoas que iniciaram o projeto Matr3co.</p>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Leonor Oliveira (Product Owner) -->
+     <div class="col-md-4 col-sm-4 animate-box" data-animate-effect="fadeIn">
+         <div class="fh5co-staff text-center">
+           <div class="staff-photo-wrapper mx-auto">
+             <img src="{{ url_for('static', filename='images/imagem-leonor.jpg') }}"
+                  alt="Leonor Oliveira"
+                 class="rounded-circle mx-auto d-block"
+                 width="300" height="300">
+           </div>
+           <h3>Leonor Oliveira</h3>
+           <strong class="role">Product Owner</strong>
+           <p>Estudante de Tecnologias Digitais Edifícios e Construção Sustentável e desempenho o papel de Product Owner no projeto Matr3co. Sou responsável por definir a visão e as prioridades do produto, garanto que cada funcionalidade do site esteja alinhada com os princípios de sustentabilidade e economia circular. Eu coordeno a equipa, colaboro com o frontend e o backend para que a experiência do utilizador seja intuitiva e eficaz, e asseguro que o site cumpra o propósito de promover a reutilização de materiais de construção.</p>
+         </div>
+     </div>
+
+        <!-- Ana Sofia Santos (Scrum Master) -->
+     <div class="col-md-4 col-sm-4 animate-box" data-animate-effect="fadeIn">
+         <div class="fh5co-staff text-center">
+           <div class="staff-photo-wrapper mx-auto">
+             <img src="{{ url_for('static', filename='images/imagem-sofia.jpg') }}"
+                  alt="Ana Sofia Santos"
+                  class="rounded-circle mx-auto d-block"
+                  width="300" height="300">
+           </div>
+            <h3>Ana Sofia Santos</h3>
+            <strong class="role">Scrum Master e Co-Owner</strong>
+            <p>Estudante de Tecnologias Digitais Edifícios e Construção Sustentável e atuo como Scrum Master no projeto Matr3co. A minha função é remover impedimentos e garantir que a equipa esteja alinhada com as metas de cada sprint. Com forte conhecimento em metodologias Scrum e gestão de projetos, eu promovo a colaboração entre os membros de frontend e backend, assegurando que as userstories sejam entregues dentro do prazo e com qualidade. A minha capacidade de comunicação e espírito de liderança ajuda a manter a motivação da equipa, enquanto todos trabalham em prol de uma plataforma que impulsione a sustentabilidade e a economia circular.</p>
+         </div>
+     </div>
+
+        <!-- Rodrigo Caracol (Developer) -->
+     <div class="col-md-4 col-sm-4 animate-box" data-animate-effect="fadeIn">
+         <div class="fh5co-staff text-center">
+           <div class="staff-photo-wrapper mx-auto">
+             <img src="{{ url_for('static', filename='images/imagem-caracol.jpg') }}"
+                  alt="Rodrigo Caracol"
+                  class="rounded-circle mx-auto d-block"
+                  width="300" height="300">
+           </div>
+            <h3>Rodrigo Caracol</h3>
+            <strong class="role">Developer e Co-Owner</strong>
+            <p>Estudante de Tecnologias Digitais Edifícios e Construção Sustentável e atuo como Developer no projeto Matr3co. O meu papel é ser responsável pela implementação e manutenção das funcionalidades principais do site, garantindo que o backend e o frontend funcionem bem para o utilizador. Pretendo proporcionar uma boa experiência para o utilizador quando busca e faz venda de materiais de construção. A minha atenção aos detalhes e boas práticas de programação promovem a escalabilidade e a confiabilidade da plataforma.</p>
+          </div>
+        </div>
+     </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <!-- JS específico, se houver -->
 {% endblock %}

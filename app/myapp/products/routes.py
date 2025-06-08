@@ -38,22 +38,7 @@ def _load_category_choices(form):
 
 @bp.route('/', methods=['GET'])
 def index():
-    db = get_db()
-    cur = db.cursor(dictionary=True)
-    cur.execute("""
-        SELECT
-            p.id, p.title, p.price, p.is_negotiable,
-            p.estado,
-            MIN(pi.filename) AS thumb
-        FROM products p
-        LEFT JOIN product_images pi ON p.id = pi.product_id
-        WHERE p.is_available = 'disponivel'
-        GROUP BY p.id
-        ORDER BY p.created_at DESC
-        LIMIT 20
-    """)
-    products = cur.fetchall()
-    return render_template('index.html', products=products)
+    return redirect(url_for('main.index'))
 
 @bp.route('/new', methods=['GET', 'POST'])
 def create():
@@ -63,6 +48,10 @@ def create():
 
     form = ProductForm()
     _load_category_choices(form)
+
+    # No GET, garantir que o select começa em “disponivel”
+    if request.method == 'GET':
+        form.is_available.data = 'disponivel'
 
     if form.validate_on_submit():
         db = get_db()
@@ -83,7 +72,7 @@ def create():
                 float(form.price.data),
                 form.is_negotiable.data,
                 form.estado.data,
-                'disponivel'
+                form.is_available.data    # <— usa o form aqui
             ))
             product_id = cur.lastrowid
 
@@ -137,37 +126,34 @@ def edit(product_id):
     cur_dict.execute("SELECT id, filename FROM product_images WHERE product_id = %s", (product_id,))
     product_images = cur_dict.fetchall()
     cur_dict.close()
-
-    form = ProductForm(request.form if request.method == 'POST' else None)
-
-    if request.method == 'GET':
-        form.title.data = prod.get('title')
-        form.description.data = prod.get('description')
-        form.price.data = prod.get('price')
-        form.is_negotiable.data = prod.get('is_negotiable')
-        form.category.data = prod.get('category_id')
-        form.subcategory.data = prod.get('subcategory_id')
-        form.estado.data = prod.get('estado')
-
+    form = ProductForm(request.form if request.method=='POST' else None)
     _load_category_choices(form)
 
-    if request.method == 'POST':
-        if not form.validate():
-            flash('Erro ao validar o formulário.', 'danger')
-            return render_template('edit_product.html', form=form, product=prod, product_images=product_images)
+    if request.method == 'GET':
+        form.title.data        = prod['title']
+        form.description.data  = prod['description']
+        form.price.data        = prod['price']
+        form.is_negotiable.data= prod['is_negotiable']
+        form.category.data     = prod['category_id']
+        form.subcategory.data  = prod['subcategory_id']
+        form.estado.data       = prod['estado']
+        form.is_available.data = prod['is_available']    # <— preenche aqui
 
+    if request.method == 'POST' and form.validate():
         cur_update = db.cursor()
         try:
             cur_update.execute("""
                 UPDATE products
-                SET category_id=%s,
-                    subcategory_id=%s,
-                    title=%s,
-                    description=%s,
-                    price=%s,
-                    is_negotiable=%s,
-                    estado=%s
-                WHERE id=%s AND user_id=%s
+                   SET category_id   = %s,
+                       subcategory_id= %s,
+                       title         = %s,
+                       description   = %s,
+                       price         = %s,
+                       is_negotiable = %s,
+                       estado        = %s,
+                       is_available  = %s        -- <— atualiza aqui
+                 WHERE id = %s
+                   AND user_id = %s
             """, (
                 form.category.data,
                 form.subcategory.data,
@@ -176,6 +162,7 @@ def edit(product_id):
                 float(form.price.data),
                 form.is_negotiable.data,
                 form.estado.data,
+                form.is_available.data,     # <— 
                 product_id,
                 session['user_id']
             ))

@@ -1,4 +1,5 @@
-# forms.py
+# products/forms.py
+
 from flask_wtf import FlaskForm
 from wtforms import (
     StringField, TextAreaField, DecimalField, BooleanField,
@@ -13,30 +14,36 @@ class ProductForm(FlaskForm):
     price         = DecimalField('Preço (€)', validators=[DataRequired(), NumberRange(min=0)])
     is_negotiable = BooleanField('Preço negociável?')
     
-    # Novo campo para estado (conservação)
     estado = SelectField(
         'Estado de Conservação',
         choices=[
             ('novo', 'Novo'),
-            ('seminovo', 'Semi‐novo'),
+            ('seminovo', 'Semi-novo'),
             ('usado', 'Usado'),
             ('recondicionado', 'Recondicionado')
         ],
         validators=[DataRequired()]
     )
-    
+   
+    is_available = SelectField(
+        'Disponibilidade',
+        choices=[
+            ('indisponivel', 'Indisponível'),
+            ('disponivel',   'Disponível'),
+            ('reservado',    'Reservado'),
+            ('vendido',      'Vendido')
+        ],
+        default='disponivel',
+        validators=[DataRequired()]
+    )
+
     category    = SelectField('Categoria', coerce=int, validators=[DataRequired()])
     subcategory = SelectField('Subcategoria', coerce=int, validators=[DataRequired()])
 
     photos = MultipleFileField(
         'Fotos',
-        validators=[
-            FileAllowed(['jpg','jpeg','png','gif'], 'Somente imagens!')
-            # Se quiser forçar ao menos 1 foto, descomente:
-            # FileRequired('Selecione pelo menos uma foto.')
-        ],
-        render_kw={
-            'accept': '.jpg,.jpeg,.png,.gif'
-        }
+        validators=[ FileAllowed(['jpg','jpeg','png','gif'], 'Somente imagens!') ],
+        render_kw={'accept':'.jpg,.jpeg,.png,.gif'}
     )
     submit      = SubmitField('Salvar')
+

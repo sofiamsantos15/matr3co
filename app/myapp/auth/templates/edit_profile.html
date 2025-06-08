@@ -1,45 +1,101 @@
 {% extends "base.html" %}
 {% block content %}
+  <div class="container mt-5">
+    <h2>Editar Perfil</h2>
+    <form method="post">
+      {{ form.hidden_tag() }}
+      
+      <div class="mb-3">
+        {{ form.username.label(class="form-label") }}
+        {{ form.username(class="form-control") }}
+      </div>
+      
+      <div class="mb-3">
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control") }}
+      </div>
+      
+      <div class="accordion" id="accordionPassword">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingPassword">
+            <button
+              class="accordion-button btn btn-outline-success collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapsePassword"
+              aria-expanded="false"
+              aria-controls="collapsePassword">
+              Editar Palavra-Passe
+            </button>
+          </h2>
+          <div
+            id="collapsePassword"
+            class="accordion-collapse collapse"
+            aria-labelledby="headingPassword"
+            data-bs-parent="#accordionPassword">
+            <div class="accordion-body border border-success rounded">
+              
+              <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+                <small class="form-text text-muted">
+                  {{ form.password.description }}
+                </small>
+              </div>
+              
+              <div class="mb-3">
+                {{ form.confirm.label(class="form-label") }}
+                {{ form.confirm(class="form-control") }}
+                <small class="form-text text-muted">
+                  {{ form.confirm.description }}
+                </small>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <p></p> 
+      <button type="submit" class="btn btn-success">
+        {{ form.submit.label.text }}
+      </button>
+      <a href="{{ url_for('main.index') }}" class="btn btn-outline-danger">
+        Cancelar
+      </a>
+    </form>
+  </div>
+<p></p>
+<hr>
 <div class="container mt-5">
-  <h2>Editar Perfil</h2>
-  <form method="post">
-    {{ form.hidden_tag() }}
-    <div class="mb-3">
-      {{ form.username.label(class="form-label") }}
-      {{ form.username(class="form-control") }}
-    </div>
-    <div class="mb-3">
-      {{ form.email.label(class="form-label") }}
-      {{ form.email(class="form-control") }}
-    </div>
-    <div class="mb-3">
-      {{ form.password.label(class="form-label") }}
-      {{ form.password(class="form-control") }}
-      <small class="form-text text-muted">
-        {{ form.password.description }}
-      </small>
-    </div>
-    <div class="mb-3">
-      {{ form.confirm.label(class="form-label") }}
-      {{ form.confirm(class="form-control") }}
-      <small class="form-text text-muted">
-        {{ form.confirm.description }}
-      </small>
-    </div>
-    <button type="submit" class="btn btn-primary">
-      {{ form.submit.label.text }}
-    </button>
-  </form>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link text-success {% if is_available == 'indisponivel' %}active{% endif %}"
+        href="{{ url_for('auth.edit_profile', is_available='indisponivel') }}">
+        Para Vender
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link text-success {% if is_available == 'disponivel' %}active{% endif %}"
+        href="{{ url_for('auth.edit_profile', is_available='disponivel') }}">
+        Em Venda
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link text-success {% if is_available == 'vendido' %}active{% endif %}"
+        href="{{ url_for('auth.edit_profile', is_available='vendido') }}">
+        Vendidos
+      </a>
+    </li>
+  </ul>
 
-  <hr>
-
-  <h3 class="mt-4">Os meus produtos</h3>
-  <table class="table table-striped">
+  <table class="table table-striped mt-3">
     <thead>
       <tr>
         <th>Título</th>
         <th>Preço (€)</th>
-        <th>Estado</th>
         <th>Ação</th>
       </tr>
     </thead>
@@ -48,17 +104,12 @@
       <tr>
         <td>{{ product.title }}</td>
         <td>{{ "{:,.2f}".format(product.price) }}</td>
-        <td>{{ product.is_available }}</td>
         <td>
-          <form method="post" action="{{ url_for('auth.toggle_product_status', product_id=product.id) }}">
-            {{ form.hidden_tag() }}
-            <input type="hidden" name="next" value="{{ request.path }}">
-            {% if product.is_available == 'disponivel' %}
-              <button type="submit" class="btn btn-danger btn-sm">Retirar de venda</button>
-            {% else %}
-              <button type="submit" class="btn btn-success btn-sm">Colocar à venda</button>
-            {% endif %}
-          </form>
+          <a
+            href="{{ url_for('products.edit', product_id=product.id) }}"
+            class="btn btn-outline-success">
+            Editar
+          </a>
         </td>
       </tr>
       {% endfor %}

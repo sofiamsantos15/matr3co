@@ -23,6 +23,9 @@
     <button type="submit" class="btn btn-success">
       {{ form.submit.label.text }}
     </button>
+    <a href="{{ url_for('main.index') }}" class="btn btn-outline-danger">
+      Cancelar
+    </a>
   </form>
 </div>
 {% endblock %}

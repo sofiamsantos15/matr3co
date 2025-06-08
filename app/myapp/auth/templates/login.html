@@ -12,10 +12,10 @@
       {{ form.password.label(class="form-label") }}
       {{ form.password(class="form-control") }}
     </div>
-    <button type="submit" class="btn btn-primary">
+    <button type="submit" class="btn btn-success">
       {{ form.submit.label.text }}
     </button>
-    <a href="{{ url_for('auth.register') }}" class="btn btn-link">
+    <a href="{{ url_for('auth.register') }}" class="btn btn-outline-success">
       Criar Conta
     </a>
   </form>

@@ -38,16 +38,24 @@
     </div>
 
     <div class="mb-3">
-      {{ form.estado.label }}
+      {{ form.estado.label }} 
       {{ form.estado(class="form-select") }}
     </div>
 
+    <div class="mb-3">
+      {{ form.is_available.label }}
+      {{ form.is_available(class="form-select") }}
+    </div>
+   
     <div class="mb-3">
       {{ form.photos.label }} 
       {{ form.photos(class="form-control", multiple=true, accept=".jpg,.jpeg,.png,.gif") }}
     </div>
     
     <button type="submit" class="btn btn-success">{{ form.submit.label.text }}</button>
+    <a href="{{ url_for('main.index') }}" class="btn btn-outline-danger">
+      Cancelar
+    </a>
   </form>
 </div>
 {% endblock %}
