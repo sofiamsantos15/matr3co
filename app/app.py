@@ -8,7 +8,7 @@ def create_app():
    
     app = Flask(__name__,
                 static_folder='static',
-                template_folder='templates')  # só para o caso de teres templates comuns
+                template_folder='templates')  
 
     # secrets & BD
     app.config.update(

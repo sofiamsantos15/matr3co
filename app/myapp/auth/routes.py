@@ -1,9 +1,8 @@
 print(">>> carreguei auth/routes.py")
 import os
-from itsdangerous import URLSafeTimedSerializer
 from flask import (
     render_template, redirect, url_for,
-    flash, session, request, current_app
+    flash, session, request
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from myapp.db import get_db

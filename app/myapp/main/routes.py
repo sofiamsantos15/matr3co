@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, session, request
+from flask import render_template, request
 from . import bp
 from myapp.db import get_db   # <— adiciona esta linha
 

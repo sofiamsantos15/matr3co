@@ -36,7 +36,8 @@ def add_to_cart(product_id):
     else:
         flash('Não é possível adicionar este produto.', 'danger')
 
-    return redirect(url_for('products.detail', product_id=product_id))
+    #return redirect(url_for('products.detail', product_id=product_id))
+    return redirect(url_for('cart.view_cart'))
 
 @bp.route('/remove/<int:product_id>')
 def remove_from_cart(product_id):

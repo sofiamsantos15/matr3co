@@ -3,7 +3,7 @@ import uuid
 import logging
 from flask import (
     render_template, request, redirect, url_for,
-    flash, session, current_app, Blueprint, jsonify
+    flash, session, current_app, jsonify
 )
 from werkzeug.utils import secure_filename
 from . import bp
