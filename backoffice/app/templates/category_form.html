@@ -4,6 +4,9 @@
 <form method="post">
   {{ form.hidden_tag() }}
   <div class="mb-3">{{ form.name.label }} {{ form.name(class="form-control") }}</div>
-  <button class="btn btn-primary">{{ form.submit.label.text }}</button>
+  <button class="btn btn-success">{{ form.submit.label.text }}</button>
+   <a href="{{ url_for('routes.categories') }}" class="btn btn-outline-danger">
+            Cancelar
+    </a>
 </form>
 {% endblock %}

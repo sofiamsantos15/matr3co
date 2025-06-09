@@ -125,9 +125,9 @@ SET character_set_connection = utf8mb4;
 INSERT INTO users (username, email, password, profile, photo, is_active)
 VALUES 
     (
+        'Administrador',
         'admin',
-        'joao.silva@example.com',
-        '1234',
+        'pbkdf2:sha256:260000$2TCoKx9ZsUgnklPv$932506fb5cb0d12b1edcee6f7c3ee4728133b33c311548d03a95c0a6a594453d',
         'admin',
         NULL,
         TRUE
@@ -135,7 +135,7 @@ VALUES
     (
         'Sofia Santos',
         'sofia.marcelino.santos@gmail.com',
-        'pbkdf2:sha256:260000$dxHgNxD8jZRIquup$f4196b26636278ce19de65119e207936871b6409732acb486d3684f36117490b',
+        'pbkdf2:sha256:260000$2TCoKx9ZsUgnklPv$932506fb5cb0d12b1edcee6f7c3ee4728133b33c311548d03a95c0a6a594453d',
         'admin',
         NULL,
         TRUE

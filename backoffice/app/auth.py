@@ -3,6 +3,7 @@ from werkzeug.security import check_password_hash
 from .forms import LoginForm
 from .db import get_db, close_db
 
+
 bp = Blueprint('auth', __name__, url_prefix='')
 
 def admin_required(f):
@@ -22,12 +23,11 @@ def login():
         db = get_db()
         cur = db.cursor(dictionary=True)
         cur.execute(
-            "SELECT id, password, profile FROM users WHERE username=%s",
+            "SELECT id, password, profile FROM users WHERE is_active=1 and email=%s",
             (form.username.data,)
         )
         user = cur.fetchone()
-        #if user and user['profile']=='admin' and check_password_hash(user['password'], form.password.data):
-        if user and user['profile']=='admin' and user['password']==form.password.data: 
+        if user and user['profile']=='admin' and check_password_hash(user['password'], form.password.data):
             session.clear()
             session['admin_id'] = user['id']
             return redirect(url_for('routes.dashboard'))

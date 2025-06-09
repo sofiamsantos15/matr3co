@@ -118,7 +118,7 @@ def delete_subcategory(id):
 @admin_required
 def users():
     db = get_db(); cur = db.cursor(dictionary=True)
-    cur.execute("SELECT id, username, email, profile FROM users ORDER BY username")
+    cur.execute("SELECT id, username, email, profile, is_active FROM users ORDER BY username")
     users = cur.fetchall()
     return render_template('users.html', users=users)
 
@@ -126,15 +126,15 @@ def users():
 @admin_required
 def edit_user(id):
     db = get_db(); cur = db.cursor(dictionary=True)
-    cur.execute("SELECT id, username, email, profile FROM users WHERE id=%s", (id,))
+    cur.execute("SELECT id, username, email, profile, is_active FROM users WHERE id=%s", (id,))
     u = cur.fetchone()
     form = UserForm(data=u)
     if form.validate_on_submit():
         cur.execute("""
           UPDATE users
-             SET username=%s, email=%s, profile=%s
+             SET username=%s, email=%s, profile=%s, is_active=%s
            WHERE id=%s
-        """, (form.username.data, form.email.data, form.profile.data, id))
+        """, (form.username.data, form.email.data, form.profile.data, form.is_active.data, id))
         db.commit()
         flash('Utilizador atualizado!', 'success')
         return redirect(url_for('routes.users'))

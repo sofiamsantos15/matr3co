@@ -2,14 +2,18 @@
 {% block content %}
 <h2>Utilizadores</h2>
 <table class="table">
-  <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Perfil</th><th>Acoes</th></tr></thead>
+  <thead><tr><th>Nome</th><th>Email</th><th>Perfil</th><th>Estado</th><th>Acoes</th></tr></thead>
   <tbody>
   {% for u in users %}
     <tr>
-      <td>{{ u.id }}</td>
       <td>{{ u.username }}</td>
       <td>{{ u.email }}</td>
       <td>{{ u.profile }}</td>
+      {% if u.is_active %}
+          <td>Ativo</td>
+      {% else %}
+          <td>Inativo</td>
+      {% endif %}      
       <td>
         <a href="{{ url_for('routes.edit_user', id=u.id) }}" class="btn btn-sm btn-warning">Editar</a>
       </td>

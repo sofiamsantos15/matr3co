@@ -20,7 +20,7 @@ def login():
         cur = db.cursor(dictionary=True)
         cur.execute(
             'SELECT id, username, password, profile, email '
-            'FROM users WHERE email = %s',
+            'FROM users WHERE is_active=1 and email = %s' ,
             (form.email.data,)
         )
         user = cur.fetchone()

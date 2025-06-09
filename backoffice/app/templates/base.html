@@ -1,25 +1,72 @@
 <!doctype html>
 <html lang="pt">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Backoffice</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Matr3co</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- Ícones do Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg sticky-top py-lg-1 pe-3" style="background-color: #a4ce9b;">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{ url_for('routes.dashboard') }}">Backoffice</a>
+    <div class="container-fluid d-flex align-items-center">
+    <!-- Marca -->
+    <a class="navbar-brand" href="{{ url_for('routes.dashboard') }}" >
+      <img src="{{ url_for('static', filename='images/Matr3co.png') }}"
+           alt="Logo" width="120px" height="120px"
+           class="d-inline-block align-text-top">
+    </a>
+    <a class="navbar-brand" href="{{ url_for('routes.dashboard') }}" >
+           <span class="ms-2 align-middle" style="font-size: 30px;">
+          Matr3co - Backoffice
+        </span> 
+    </a>
+    {% if session.admin_id %}
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('routes.categories') }}">Categorias</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('routes.subcategories') }}">Subcategorias</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('routes.users') }}">Utilizadores</a></li>
+           <li>
+              <button
+                type="button"
+                class="btn btn-outline-success w-100 text-start"
+                onclick="location.href='{{ url_for('routes.categories') }}'">
+                Categorias
+              </button>
+          </li>
+      </ul>
+       <ul class="navbar-nav me-auto">
+          <li>
+              <button
+                type="button"
+                class="btn btn-outline-success w-100 text-start"
+                onclick="location.href='{{ url_for('routes.subcategories') }}'">
+                Subcategorias
+              </button>
+          </li>
+       </ul>
+        <ul class="navbar-nav me-auto">
+            <li>
+              <button
+                type="button"
+                class="btn btn-outline-success w-100 text-start"
+                onclick="location.href='{{ url_for('routes.users') }}'">
+                Utilizadores
+              </button>
+          </li>
       </ul>
       <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+         <li>
+              <button
+                type="button"
+                class="btn btn-outline-success w-100 text-start"
+                onclick="location.href='{{ url_for('auth.logout') }}'">
+                Terminar Sessão
+              </button>
+          </li>
       </ul>
     </div>
+    {% endif %}
   </div>
 </nav>
 <div class="container mt-4">

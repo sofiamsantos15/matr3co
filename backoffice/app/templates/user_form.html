@@ -6,6 +6,10 @@
   <div class="mb-3">{{ form.username.label }} {{ form.username(class="form-control") }}</div>
   <div class="mb-3">{{ form.email.label }} {{ form.email(class="form-control") }}</div>
   <div class="mb-3">{{ form.profile.label }} {{ form.profile(class="form-select") }}</div>
-  <button class="btn btn-primary">{{ form.submit.label.text }}</button>
+  <div class="mb-3">{{ form.is_active.label }} {{ form.is_active(class="form-select") }}</div>
+  <button class="btn btn-success">{{ form.submit.label.text }}</button>
+   <a href="{{ url_for('routes.users') }}" class="btn btn-outline-danger">
+            Cancelar
+    </a>
 </form>
 {% endblock %}
